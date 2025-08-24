@@ -1,0 +1,127 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum StoryStatus {
+  DRAFT
+  ONGOING
+  COMPLETED
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  role          UserRole  @default(USER)
+  accounts      Account[]
+  sessions      Session[]
+  ratings       Rating[]
+  comments      Comment[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Story {
+  id          String      @id @default(cuid())
+  slug        String      @unique
+  title       String
+  author      String?
+  synopsis    String      @db.Text
+  coverImage  String?
+  genres      String[]
+  status      StoryStatus @default(DRAFT)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  chapters    Chapter[]
+  ratings     Rating[]
+  comments    Comment[]
+
+  // New fields added:
+  providerUrl     String?     // Stores the URL from the content provider (optional)
+  providerStoryId String?     // Stores the unique ID from the content provider (optional)
+
+  @@index([title])
+}
+
+model Chapter {
+  id              String   @id @default(cuid())
+  chapterNumber   Int
+  title           String
+  content         String   @db.Text
+  translatedContent String @db.Text
+  createdAt       DateTime @default(now())
+  storyId         String
+  story           Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+
+  // New fields added:
+  providerStoryId     String?     // Stores the ID of the story from the content provider (optional)
+  providerChapterId   String?     // Stores the unique ID of the chapter from the content provider (optional)
+
+  @@unique([storyId, chapterNumber])
+}
+
+model Rating {
+  id      String @id @default(cuid())
+  value   Int // Value from 1 to 5
+  userId  String
+  storyId String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  story   Story  @relation(fields: [storyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, storyId]) // A user can only rate a story once
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  text      String
+  createdAt DateTime @default(now())
+  userId    String
+  storyId   String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  story     Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  
+  // For threaded comments
+  parentId  String?
+  parent    Comment?  @relation("Replies", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies   Comment[] @relation("Replies")
+}
