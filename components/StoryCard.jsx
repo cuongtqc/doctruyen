@@ -18,19 +18,22 @@ export const StoryCard = ({ story }) => {
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
         />
         {/* You could add a gradient or overlay here */}
-        <div className="absolute inset-0 bg-gradient-to-t from-stone-900 via-transparent to-transparent opacity-50"></div>
+        {/* <div className="absolute inset-0 bg-gradient-to-t from-stone-900 via-transparent to-transparent opacity-50"></div> */}
       </div>
 
       {/* Story Details */}
-      <div className="p-4 flex-1 flex flex-col absolute bg-gray-700/60 h-full max-h-full">
-        <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 leading-tight">
-          {story.title}
+      <div className="p-4 flex-1 flex flex-col h-full max-h-full">
+        <h3
+          className="text-md sm:text-sm font-bold text-white mb-2 leading-tight"
+          title={story.title}
+        >
+          {truncateText(story.title, 34)}
         </h3>
-        <p className="text-sm sm:text-base text-stone-400 mb-3 leading-tight">
+        {/* <p className="text-sm sm:text-base text-stone-400 mb-3 leading-tight">
           By {story.author}
-        </p>
+        </p> */}
         <p className="text-sm text-stone-300 flex-1 mb-4 leading-tight">
-          {truncateText(story.synopsis, 100)}
+          {truncateText(story.synopsis, 60)}
         </p>
         <div className="mt-auto">
           <a
