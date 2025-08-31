@@ -22,7 +22,7 @@ export const StoryCard = ({ story }) => {
       </div>
 
       {/* Story Details */}
-      <div className="p-4 flex-1 flex flex-col absolute bg-gray-700/60 h-full">
+      <div className="p-4 flex-1 flex flex-col absolute bg-gray-700/60 h-full max-h-full">
         <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 leading-tight">
           {story.title}
         </h3>
