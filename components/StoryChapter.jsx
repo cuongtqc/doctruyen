@@ -56,7 +56,7 @@ export const StoryChapter = ({
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-300 ${backgroundColor} text-stone-300 font-sans`}
+      className={`min-h-screen transition-colors pb-22 duration-300 ${backgroundColor} text-stone-300 font-sans`}
     >
       <div className="max-w-3xl mx-auto py-8 sm:py-12 px-4 sm:px-6">
         {/* Chapter Title */}

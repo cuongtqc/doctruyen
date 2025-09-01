@@ -33,8 +33,8 @@ export default async function HomePage() {
       </section> */}
 
       <section className="mb-12">
-        <h2 className="text-2xl font-bold mb-4">Trending Stories</h2>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <h2 className="text-2xl font-bold mb-4">Nổi bật</h2>
+        <div className="grid grid-cols-2 md:grid-cols-6 xl:grid-cols-7 gap-4">
           {trending.map((story) => (
             <StoryCard key={`trending-${story.id}`} story={story} /> // Replace with <StoryCard />
           ))}
@@ -42,8 +42,8 @@ export default async function HomePage() {
       </section>
 
       <section className="mb-12">
-        <h2 className="text-2xl font-bold mb-4">Highest Rated</h2>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <h2 className="text-2xl font-bold mb-4">Đánh giá cao</h2>
+        <div className="grid grid-cols-2 md:grid-cols-6 xl:grid-cols-7 gap-4">
           {highestRated.map((story) => (
             <StoryCard key={`rated-${story.id}`} story={story} /> // Replace with <StoryCard />
           ))}

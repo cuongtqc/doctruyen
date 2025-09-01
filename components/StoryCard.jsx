@@ -9,9 +9,12 @@ export const StoryCard = ({ story }) => {
     router.push(`/story/${story.slug}`);
   };
   return (
-    <div className="bg-stone-800 rounded-xl overflow-hidden shadow-2xl transition-transform hover:scale-105 duration-300 transform-gpu cursor-pointer group flex flex-col h-full relative">
+    <div
+      onClick={handleNavigate}
+      className="bg-stone-800/90 rounded-xl overflow-hidden shadow-2xl transition-transform hover:scale-105 duration-300 transform-gpu cursor-pointer group flex flex-col h-full relative"
+    >
       {/* Story Cover Image */}
-      <div className="relative w-full h-48 sm:h-64 overflow-hidden">
+      <div className="relative w-full h-40 sm:h-48 overflow-hidden">
         <img
           src={story.coverImage}
           alt={`Cover of ${story.title}`}
@@ -22,9 +25,9 @@ export const StoryCard = ({ story }) => {
       </div>
 
       {/* Story Details */}
-      <div className="p-4 flex-1 flex flex-col h-full max-h-full">
+      <div className="p-2 sm:p-4 flex-1 flex flex-col h-full max-h-full">
         <h3
-          className="text-md sm:text-sm font-bold text-white mb-2 leading-tight"
+          className="text-xs sm:text-sm font-bold text-white mb-2 leading-tight"
           title={story.title}
         >
           {truncateText(story.title, 34)}
@@ -32,18 +35,9 @@ export const StoryCard = ({ story }) => {
         {/* <p className="text-sm sm:text-base text-stone-400 mb-3 leading-tight">
           By {story.author}
         </p> */}
-        <p className="text-sm text-stone-300 flex-1 mb-4 leading-tight">
-          {truncateText(story.synopsis, 60)}
+        <p className="text-xs sm:text-sm text-stone-300 flex-1 mb-4 leading-tight">
+          {truncateText(story.synopsis, 72)}
         </p>
-        <div className="mt-auto">
-          <a
-            onClick={handleNavigate}
-            href="#"
-            className="inline-block bg-white text-stone-900 font-semibold py-0 px-2 rounded-full text-sm hover:bg-stone-200 transition-colors duration-200"
-          >
-            Read More
-          </a>
-        </div>
       </div>
     </div>
   );
