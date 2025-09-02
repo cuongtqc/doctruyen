@@ -7,8 +7,6 @@ async function getChapter({ storySlug, chapterNumber }) {
     where: { slug: storySlug },
   });
 
-  console.log("@== story", story);
-
   if (!story) {
     notFound();
   }
@@ -22,15 +20,28 @@ async function getChapter({ storySlug, chapterNumber }) {
     },
   });
 
+  const nextChapter = await db.chapter.findUnique({
+    where: {
+      storyId_chapterNumber: {
+        storyId: story.id,
+        chapterNumber: +chapterNumber + 1,
+      },
+    },
+  });
+
   if (!chapter) {
     notFound();
   }
-  return { story, chapter };
+  return { story, chapter, nextChapter };
 }
 
 const ChapterReaderPage = async ({ params }) => {
   const { slug, chapter: chapterNumber } = await params;
-  const { story, chapter: currentChapter } = await getChapter({
+  const {
+    story,
+    chapter: currentChapter,
+    nextChapter,
+  } = await getChapter({
     storySlug: slug,
     chapterNumber,
   });
@@ -39,7 +50,7 @@ const ChapterReaderPage = async ({ params }) => {
     <StoryChapter
       story={story}
       currentChapter={currentChapter}
-      initialChapterNumber={1}
+      nextChapter={nextChapter}
     />
   );
 };

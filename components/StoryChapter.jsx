@@ -2,22 +2,20 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { StoryContent } from "@/components/StoryContent";
 
 // Main Reader component
-export const StoryChapter = ({
-  story,
-  currentChapter,
-  initialChapterNumber,
-}) => {
+export const StoryChapter = ({ story, currentChapter, nextChapter }) => {
   const router = useRouter();
-  const [currentChapterNumber, setCurrentChapterNumber] =
-    useState(initialChapterNumber);
+  const [currentChapterNumber, setCurrentChapterNumber] = useState(
+    currentChapter.chapterNumber
+  );
   const [fontSize, setFontSize] = useState(16); // Default font size in pixels
   const [backgroundColor, setBackgroundColor] = useState("bg-stone-900"); // Default background color
 
   // Determine if navigation buttons should be enabled
   const hasPreviousChapter = currentChapterNumber > 1;
-  const hasNextChapter = currentChapterNumber < story.chapters?.length;
+  const hasNextChapter = !!nextChapter;
 
   // Handler for font size changes
   const handleFontSizeChange = (increment) => {
@@ -31,19 +29,23 @@ export const StoryChapter = ({
   // Handlers for chapter navigation
   const handlePreviousChapter = () => {
     if (hasPreviousChapter) {
-      setCurrentChapterNumber((prev) => prev - 1);
+      router.push(`/story/${story.slug}/${+currentChapter.chapterNumber - 1}`);
     }
   };
 
   const handleNextChapter = () => {
-    if (hasNextChapter) {
-      setCurrentChapterNumber((prev) => prev + 1);
+    if (nextChapter) {
+      router.push(`/story/${story.slug}/${nextChapter.chapterNumber}`);
     }
   };
 
   // Handlers for background color changes
   const handleBackgroundChange = (color) => {
     setBackgroundColor(color);
+  };
+
+  const handleGoStory = () => {
+    return router.push(`/story/${story.slug}`);
   };
 
   if (!currentChapter) {
@@ -60,22 +62,25 @@ export const StoryChapter = ({
     >
       <div className="max-w-3xl mx-auto py-8 sm:py-12 px-4 sm:px-6">
         {/* Chapter Title */}
+        <h2
+          onClick={handleGoStory}
+          className="text-xl sm:text-xl font-extrabold text-white mb-4 hover:underline cursor-pointer"
+        >
+          Truyện: {story.title}
+        </h2>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-white mb-4">
           {currentChapter.title}
         </h1>
-
         {/* Author */}
         <p className="text-sm sm:text-base text-stone-400 mb-8">
-          By {story.author}
+          By {story.author || "Vô danh"}
         </p>
 
         {/* Content with dynamic font size */}
-        <div
-          className="leading-relaxed whitespace-pre-wrap text-stone-200"
-          style={{ fontSize: `${fontSize}px` }}
-        >
-          {currentChapter.translatedContent}
-        </div>
+        <StoryContent
+          content={currentChapter.translatedContent}
+          fontSize={fontSize}
+        />
 
         {/* Navigation & Reader Controls */}
         <div className="fixed bottom-0 left-0 right-0 bg-stone-800 bg-opacity-90 backdrop-blur-sm p-4 sm:p-6 shadow-top-2xl flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0 sm:space-x-4 border-t border-stone-700 rounded-t-xl">
@@ -98,7 +103,7 @@ export const StoryChapter = ({
               disabled={!hasNextChapter}
               className={`py-2 px-4 rounded-full text-sm font-semibold transition-all duration-200
                 ${
-                  hasNextChapter
+                  nextChapter
                     ? "bg-stone-600 hover:bg-stone-500 text-white shadow-md"
                     : "bg-stone-700 text-stone-500 cursor-not-allowed"
                 }`}

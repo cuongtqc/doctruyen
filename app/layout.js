@@ -2,6 +2,7 @@ import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { Navbar } from "@/components/public/Navbar";
 import { geistSans, geistMono } from "@/lib/ssr";
+import { Footer } from "@/components/public/Footer";
 export { metadata } from "@/lib/ssr";
 
 export default function RootLayout({ children }) {
@@ -13,9 +14,9 @@ export default function RootLayout({ children }) {
         >
           <Navbar />
           <main className="w-full">
-            <div className="p-4 rounded-lg">{children}</div>
+            <div className="rounded-lg">{children}</div>
           </main>
-          {/* <Footer /> */}
+          <Footer />
         </body>
       </html>
     </SessionProvider>

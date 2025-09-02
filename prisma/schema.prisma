@@ -80,7 +80,7 @@ model Story {
   chapters    Chapter[]
   ratings     Rating[]
   comments    Comment[]
-
+  views           Int           @default(0) // New views attribute
   // New fields added:
   providerUrl     String?     // Stores the URL from the content provider (optional)
   providerStoryId String?     // Stores the unique ID from the content provider (optional)
@@ -98,7 +98,7 @@ model Chapter {
   updatedAt   DateTime?    @updatedAt
   storyId         String
   story           Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
-
+  views           Int           @default(0) // New views attribute
   // New fields added:
   providerStoryId     String?     // Stores the ID of the story from the content provider (optional)
   providerChapterId   String?     // Stores the unique ID of the chapter from the content provider (optional)
