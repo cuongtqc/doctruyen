@@ -1,13 +1,26 @@
 "use client";
 
-import { truncateText } from "@/lib/util";
+import { displayTextDialog, truncateText, decodeHtml } from "@/lib/util";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export const StoryCard = ({ story }) => {
   const router = useRouter();
+  const [decodedContent, setDecodedContent] = useState({
+    title: "",
+    synopsis: "",
+  });
+
   const handleNavigate = () => {
     router.push(`/story/${story.slug}`);
   };
+
+  useEffect(() => {
+    setDecodedContent({
+      title: displayTextDialog(decodeHtml(story.title)),
+      synopsis: displayTextDialog(decodeHtml(story.synopsis)),
+    });
+  }, []);
   return (
     <div
       onClick={handleNavigate}
@@ -28,15 +41,15 @@ export const StoryCard = ({ story }) => {
       <div className="p-2 sm:p-4 flex-1 flex flex-col h-full max-h-full">
         <h3
           className="text-xs sm:text-sm font-bold text-white mb-2 leading-tight"
-          title={story.title}
+          title={decodedContent.title}
         >
-          {truncateText(story.title, 34)}
+          {truncateText(decodedContent.title, 34)}
         </h3>
         {/* <p className="text-sm sm:text-base text-stone-400 mb-3 leading-tight">
           By {story.author}
         </p> */}
         <p className="text-xs sm:text-sm text-stone-300 flex-1 mb-4 leading-tight">
-          {truncateText(story.synopsis, 72)}
+          {truncateText(decodedContent.synopsis, 72)}
         </p>
       </div>
     </div>

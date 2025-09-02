@@ -27,11 +27,7 @@ export default async function HomePage() {
   ]);
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      {/* <section className="mb-12">
-        <h1 className="text-4xl font-bold">Welcome to NovelNest</h1>
-      </section> */}
-
+    <main className="container mx-auto px-4 py-8 max-w-screen-2xl">
       <section className="mb-12">
         <h2 className="text-2xl font-bold mb-4">Nổi bật</h2>
         <div className="grid grid-cols-2 md:grid-cols-6 xl:grid-cols-7 gap-4">
@@ -40,7 +36,6 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
-
       <section className="mb-12">
         <h2 className="text-2xl font-bold mb-4">Đánh giá cao</h2>
         <div className="grid grid-cols-2 md:grid-cols-6 xl:grid-cols-7 gap-4">

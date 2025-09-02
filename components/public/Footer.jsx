@@ -1,7 +1,7 @@
 export const Footer = () => {
   return (
     <footer className="bg-[#9CAFAA]rounded-lg shadow-xl">
-      <div className="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
+      <div className="w-full mx-auto max-w-screen-2xl p-4 md:flex md:items-center md:justify-between">
         <span className="text-sm text-gray-500 sm:text-center">
           © 2025{" "}
           <a href="https://doctruyen.com/" className="hover:underline">

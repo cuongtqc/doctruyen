@@ -40,7 +40,7 @@ export default async function StoryDetailPage({ params }) {
   const story = await getStory(slug);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 max-w-screen-2xl">
       <header className="flex flex-col md:flex-row gap-8 mb-8">
         <img
           src={story.coverImage || "/placeholder.png"}
